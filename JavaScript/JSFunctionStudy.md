@@ -118,9 +118,148 @@ function upgradeUser(uesr) {
     }
 }
 ```
+블럭안에서 로직을 많이 작성하면 가독성이 떨어지게 된다. 
+if와 else를 번갈아 가면서 사용하는것 보단 
+``` javascript
+// good
+function upgradeUser(user) {
+    if (user.point <= 10) {
+        return;
+    }
+    // long upgrade logic...
+}
+```
+이렇게 해서 조건이 맞지 않을때는 함수를 빨리 리턴을 시켜줌
+조건이 맞을때만 필요한 로직을 수행하는것이 더 좋다.
+ 
+--------------------------
 
+### First-class function
+- functions are treated like any other variable
+- can be assigned as a value to variable
+- can be passed as an argument to other functions.
+- can be returned by another function
+ - 함수는 다른 변수와 마찬가지로 취급된다. 변수처럼 할당, 전달, 리턴 이 가능하다.
 
+위에 사항을 가능하게 한것이 function expression이다. 
+
+---------------------------
+
+##### 1. Function expression
+- a function declaration can be called earlier than it is defined. (hoisted)
+ - 할당된 다음부터 호출이 가능하다.
+- a function expression is created when the execution reaches it.
+``` javascript 
+const print = function () { // annonymous function
+    // anonymous function
+    console.log('print');
+};
+``` 
+
+- 함수를 선언함과 동시에 바로 변수에 할당하는것을 볼수가 있음 
+- 이렇게 function에 아무이름이 없고 function이라는 키워드를 이용해서 파라미터와 블럭을 이용한것
+- 함수에 이름이 없이 그냥 필요부분만 작성에서 변수에 할당할 수 있음 
+- 이름을 넣을 수도 있음
+
+``` javascript
+const print = function print() { // named function
+    // anonymous function
+    console.log('print');
+};
+print();
+const printAgain = print;
+
+// 다시 다른변수에 할당할 수 있음
+
+printAgain();
+const sumAgain = sum;
+console.log(sumAgain(1, 3));
+```
+
+------------------
+
+##### 2. Callback function using function expression
+``` javascript
+function randomQuiz(answer, printYes, printNo) {
+    if (answer === 'love you') {
+        printYes();
+    } else {
+        printNo();
+    }
+}
+
+// anonymous function
+const printYes = function () {
+console.log('yes!');
+};
+
+// named function
+// better debugging in debugger's stack traces
+// recursions
+const printNo = function print() {
+console.log('no!');
+};
+randomQuiz('wrong', printYes, printNo);
+randomQuiz('love you', printYes, printNo);
+```
+
+------------------
+
+두번 더 확인해서 보자 화살표 처리...
+### Arrow function
+
+##### always anonymous
+``` javascript
+const simplePrint = function () {
+  console.log('simplePrint!');
+};
+// 위에가 아래로
+const simplePrint = () => console.log('simplePrint!');
+
+const add = (a, b) => a + b; // 간단한거 처리할때
+const simpleMultiply = (a, b) => {
+// do something more
+// 함수안에서도 다양한 처리를 할 수 있다.
+return a * b;
+};
+```
+
+-------------
+
+### IIFE: Immediately Invoked Function Expression
+- 선언함과 동시에 바로 호출하도록 함
+``` javascript
+(function hello() {
+console.log('IIFE');
+})();
+// 자바스크립트에서 함수를 선언과 동시에 바로 호출할 때 사용하곤 했음
+``` 
+Fun quiz time❤️
+function calculate(command, a, b)
+command: add, substract, divide, multiply, remainder
+답 
+``` javascript
+function calculate(command, a, b) {
+switch (command) {
+    case 'add':
+    return a + b;
+    case 'substract':
+    return a - b;
+    case 'divide':
+    return a / b;
+    case 'multiply':
+    return a * b;
+    case 'remainder':
+    return a % b;
+    default:
+    throw Error('unknown command');
+}
+}
+console.log(calculate('add', 2, 3));
+```
+
+--------------------
 
 자료와 내용 출처
-자료: 내머릿속 & https://github.com/dream-ellie/learn-javascript
-강의내용 참고: https://www.youtube.com/channel/UC_4u-bXaba7yrRz_6x6kb_w
+- 자료: 내머릿속 & https://github.com/dream-ellie/learn-javascript
+- 강의내용 참고: https://www.youtube.com/channel/UC_4u-bXaba7yrRz_6x6kb_w
